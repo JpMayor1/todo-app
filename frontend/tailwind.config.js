@@ -6,6 +6,13 @@ export default {
   ],
   theme: {
     extend: {},
+    colors: {
+      'white': '#FBFBFB',
+      'blue': '#2D336B',
+      'black': '#1D1616',
+      'red': '#BE3144',
+      'pink': '#F7CFD8',
+    },
   },
   plugins: [],
 }
