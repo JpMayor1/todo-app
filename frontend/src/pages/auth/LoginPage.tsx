@@ -1,10 +1,15 @@
 import { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { loginApi } from "../../api/auth/auth.api";
+import axios from "axios";
+import useAuthStore from "../../stores/useAuthStore";
 
 const LoginPage = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+
+  const { setAuthUser } = useAuthStore()
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -16,8 +21,27 @@ const LoginPage = () => {
       toast.error("Password is required");
       return;
     }
-    console.log("Username: ", username);
-    console.log("Password: ", password);
+  
+    try {
+      const response = await loginApi(username, password)
+      setUserName("")
+      setPassword("")
+      setAuthUser(response.data.account);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error('An error occurred during signup.');
+        }
+      } else if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
   };
 
   return (
