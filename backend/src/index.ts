@@ -5,6 +5,8 @@ import express from 'express';
 import morgan from 'morgan';
 import connectToMongoDB from './db/db.connect';
 
+import authRoute from "./routes/auth/auth.route"
+
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -22,6 +24,8 @@ app.use(
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
+
+app.use("/api", authRoute)
 
 app.listen(PORT, () => {
     connectToMongoDB();
