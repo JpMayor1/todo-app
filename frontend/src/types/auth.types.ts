@@ -1,9 +1,10 @@
 export type AccountType = {
+    _id: string;
     username: string;
-    password: string;
 }
 
 export type AuthStoreType = {
     account: AccountType | null
     setAuthUser: (account: AccountType) => void
+    logoutUser: () => void
 }

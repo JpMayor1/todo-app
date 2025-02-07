@@ -1,28 +1,16 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import { AuthStoreType } from '../types/auth.types';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { AuthStoreType } from "../types/auth.types";
 
 const useAuthStore = create(
   persist<AuthStoreType>(
     (set) => ({
-        account: null,
+      account: null,
       setAuthUser: (account) => set({ account }),
-    //   logoutUser: () => set({ authUser: null }),
-    //   addTeamsToUser: (teams: string[]) => 
-    //     set((state) => {
-    //       if (state.authUser) {
-    //         return {
-    //           authUser: {
-    //             ...state.authUser,
-    //             teams: [...state.authUser.teams, ...teams],
-    //           },
-    //         };
-    //       }
-    //       return state;
-    //     })
+      logoutUser: () => set({ account: null }),
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
       storage: createJSONStorage(() => sessionStorage),
     }
   )
