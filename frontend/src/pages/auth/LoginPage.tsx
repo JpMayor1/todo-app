@@ -1,15 +1,15 @@
+import axios from "axios";
 import { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { loginApi } from "../../api/auth/auth.api";
-import axios from "axios";
 import useAuthStore from "../../stores/useAuthStore";
 
 const LoginPage = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setAuthUser } = useAuthStore()
+  const { setAuthUser } = useAuthStore();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,11 +21,11 @@ const LoginPage = () => {
       toast.error("Password is required");
       return;
     }
-  
+
     try {
-      const response = await loginApi(username, password)
-      setUserName("")
-      setPassword("")
+      const response = await loginApi(username, password);
+      setUserName("");
+      setPassword("");
       setAuthUser(response.data.account);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -36,7 +36,7 @@ const LoginPage = () => {
         ) {
           toast.error(error.response.data.message);
         } else {
-          toast.error('An error occurred during signup.');
+          toast.error("An error occurred during signup.");
         }
       } else if (error instanceof Error) {
         toast.error(error.message);
@@ -45,45 +45,55 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center justify-end bg-blue">
-      <h1 className="text-3xl text-white mb-[50px]">Login</h1>
-      <div className="h-[80%] w-screen bg-white rounded-tr-[100px] rounded-tl-[100px] flex items-center">
-        <div>
-          <form
-            onSubmit={handleSubmit}
-            className="h-fit w-96 bg-slate-50 p-10 rounded-md"
-          >
+    <div className="h-screen w-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue to-blue">
+      <h1 className="text-4xl text-white font-semibold mb-6 animate__animated animate__fadeIn">
+        Login
+      </h1>
+      <div className="h-auto w-full max-w-lg bg-white rounded-lg shadow-xl p-8 flex flex-col items-center">
+        <form onSubmit={handleSubmit} className="w-full">
+          <div className="space-y-6">
             <div className="flex flex-col">
-              <label>Username:</label>
+              <label className="text-lg font-semibold text-black">
+                Username
+              </label>
               <input
                 type="text"
-                placeholder="Username"
-                className="py-3 px-3 rounded-md"
+                placeholder="Enter your username"
+                className="py-3 px-4 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue transition-all duration-200"
                 value={username}
                 onChange={(e) => setUserName(e.target.value)}
               />
-              <label>Password:</label>
+            </div>
+
+            <div className="flex flex-col">
+              <label className="text-lg font-semibold text-black">
+                Password
+              </label>
               <input
                 type="password"
-                placeholder="Password"
-                className="py-3 px-3 rounded-md"
+                placeholder="Enter your password"
+                className="py-3 px-4 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue transition-all duration-200"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className="w-full flex items-center justify-center">
+
+            <div className="w-full flex items-center justify-center mt-6">
               <button
                 type="submit"
-                className="bg-blue text-white mt-3 px-4 py-2 rounded-md hover:bg-pink hover:text-black"
+                className="w-full bg-blue text-white py-3 rounded-lg hover:bg-red transition duration-200 ease-in-out"
               >
                 Login
               </button>
             </div>
-          </form>
-          <div className="w-full flex items-center justify-center">
-            <Link to={"/register"}>Register</Link>
           </div>
-        </div>
+
+          <div className="text-center mt-4">
+            <Link to="/register" className="text-blue hover:underline">
+              Don’t have an account? Register
+            </Link>
+          </div>
+        </form>
       </div>
     </div>
   );
